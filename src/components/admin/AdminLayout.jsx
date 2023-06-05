@@ -11,7 +11,7 @@ const AdminLayout = () => {
     return (
         <div className={`h-auto overflow-hidden flex relative w-full transition-all duration-200 ${extend ? "pl-[var(--admin-sidebar-lg)]" : "pl-[var(--admin-sidebar-sm)]"} sm:pl-0`}>
             <div className={`fixed top-0 left-0 bottom-0 h-full transition-all duration-200 ${extend ? 'w-[var(--admin-sidebar-lg)]' : 'w-[var(--admin-sidebar-sm)]'} sm:w-[30rem] sm:fixed sm:top-0 ${open ? 'sm:left-0' : 'sm:left-[-30rem]'}`}>
-                <Sidebar open={open} setOpen={setOpen} extend={extend} />
+                <Sidebar open={open} setOpen={setOpen} extend={extend} setExtend={setExtend} />
             </div>
 
             <div className="w-[100%] min-h-[100vh] flex flex-col">
