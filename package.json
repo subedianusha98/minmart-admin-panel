@@ -10,7 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "chart.js": "^4.3.0",
+    "firebase": "^9.22.1",
+    "framer-motion": "^10.12.16",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2"
   },
