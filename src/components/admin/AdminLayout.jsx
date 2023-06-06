@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link, Outlet } from "react-router-dom"
+import { Outlet } from "react-router-dom"
 
 // import components
 import Sidebar from "./Sidebar";
@@ -15,17 +15,20 @@ const AdminLayout = () => {
             </div>
 
             <div className="w-[100%] min-h-[100vh] flex flex-col">
-                <div className="h-[var(--nav-height)] px-[2rem] shadow-sm flex items-center justify-between sm:px-0">
+                <div className="h-[var(--nav-height)] px-[2rem] border shadow-sm flex items-center justify-between">
                     <div>
-                        <i onClick={() => setOpen(!open)} className="fa-solid fa-bars ml-[2rem] text-[2rem] cursor-pointer hidden sm:flex"></i>
+                        <i onClick={() => setOpen(!open)} className="fa-solid fa-bars text-[2rem] cursor-pointer hidden sm:flex"></i>
                         <i onClick={() => setExtend(!extend)} className={`${extend ? "fa-solid fa-arrow-left-long" : "fa-solid fa-bars"} text-[2rem] cursor-pointer sm:hidden`} ></i>
+                    </div>
+
+                    <div>
+                        <img className="h-[4rem] w-[4rem] rounded-full object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D&w=1000&q=80" alt="profile" />
                     </div>
                 </div>
 
                 <div className="h-full p-[2rem] overflow-y-auto">
                     <Outlet />
                 </div>
-
             </div>
         </div>
     )

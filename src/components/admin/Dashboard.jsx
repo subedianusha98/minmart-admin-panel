@@ -1,6 +1,6 @@
 import Widget from './Widget'
-import BarChart from './BarChart'
-import PieChart from './PieChart'
+import BarChart from '../util/BarChart';
+import PieChart from '../util/PieChart';
 
 const Dashboard = () => {
     return (
