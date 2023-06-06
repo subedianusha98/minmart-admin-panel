@@ -1,18 +1,31 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth"
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyC7j-fDXXUe4td_ZxV8gn8Qrm92w96ejQA",
-    authDomain: "react-dashboard-a7d31.firebaseapp.com",
-    projectId: "react-dashboard-a7d31",
-    storageBucket: "react-dashboard-a7d31.appspot.com",
-    messagingSenderId: "431126260604",
-    appId: "1:431126260604:web:db4d5fc42ad293da8352f9",
-    measurementId: "G-J85M4DV6QP"
+let db = false;
+let app = null;
+let auth = null;
+
+const getDb = () => {
+    if (!db) {
+        const firebaseConfig = {
+            apiKey: "AIzaSyD6EBBInHBoQzwx5dlfDa2eRwSkkyUnYiA",
+            authDomain: "minmart-bd277.firebaseapp.com",
+            projectId: "minmart-bd277",
+            storageBucket: "minmart-bd277.appspot.com",
+            messagingSenderId: "315386150973",
+            appId: "1:315386150973:web:f8e4a135a258d5ade96a54",
+            measurementId: "G-79NNRW1N1Y"
+        };
+
+        app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        auth = getAuth();
+    }
+
+    return { db, auth, app };
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
+getDb();
 
-export {app, auth}
+export { auth, app, db };
