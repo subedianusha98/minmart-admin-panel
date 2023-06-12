@@ -51,7 +51,6 @@ const Stores = () => {
                         <th className="p-[1.5rem] text-justify text-[1.45rem]"> Phone Number </th>
                         <th className="p-[1.5rem] text-justify text-[1.45rem]">Address</th>
                         <th className="p-[1.5rem] text-justify text-[1.45rem]"> PAN Number </th>
-                        <th className="p-[1.5rem] text-justify text-[1.45rem]">  </th>
 
                     </tr>
                 </thead>
@@ -63,7 +62,6 @@ const Stores = () => {
                             <td className="p-[1.5rem] text-[1.35rem]">{store.email}</td>
                             <td className="p-[1.5rem] text-[1.35rem]">{store.mobile_no}</td>
                             <td className="p-[1.5rem] text-[1.35rem]">{store.address}</td>
-                            <td className="p-[1.5rem] text-[1.35rem] ">{store.pan_no}</td>
                             <td className="p-[1.5rem] text-[1.35rem] ">{store.pan_no}</td>
 
                         </tr>
