@@ -26,7 +26,7 @@ const AdminLayout = () => {
                     </div>
                 </div>
 
-                <div className="h-full p-[2rem] overflow-y-auto">
+                <div className="h-full p-[2rem] overflow-y-auto relative">
                     <Outlet />
                 </div>
             </div>

@@ -6,8 +6,7 @@ const AuthForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
-    const [variant, setVariant] = useState("LOGIN");
+     const [variant, setVariant] = useState("LOGIN");
 
     const changeVariant = () => {
         if (variant === "LOGIN") setVariant("REGISTER");
@@ -35,7 +34,7 @@ const AuthForm = () => {
                     autoComplete='off'
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    className='border border-gray-300 p-[1rem] rounded-[0.5rem] text-[1.5rem]'
+                    className='border border-gray-400 p-[1rem] rounded-[0.5rem] text-[1.5rem]'
                 />
             </div>
 
@@ -62,7 +61,34 @@ const AuthForm = () => {
                         onChange={e => setConfirmPassword(e.target.value)}
                         className='border border-gray-300 p-[1rem] rounded-[0.5rem] text-[1.5rem]'
                     />
-                </div>}
+                </div>
+                }
+                      {variant === "REGISTER" &&
+                <div className="w-[40rem] mb-[2rem] flex flex-col gap-[0.5rem]">
+                    <label className='text-[1.45rem] text-gray-500'>Confirm Password</label>
+                    <input
+                        name="confirmPassword"
+                        type="password"
+                        autoComplete='new-password'
+                        value={confirmPassword}
+                        onChange={e => setConfirmPassword(e.target.value)}
+                        className='border border-gray-300 p-[1rem] rounded-[0.5rem] text-[1.5rem]'
+                    />
+                </div>
+                }
+                      {variant === "REGISTER" &&
+                <div className="w-[40rem] mb-[2rem] flex flex-col gap-[0.5rem]">
+                    <label className='text-[1.45rem] text-gray-500'>Confirm Password</label>
+                    <input
+                        name="confirmPassword"
+                        type="password"
+                        autoComplete='new-password'
+                        value={confirmPassword}
+                        onChange={e => setConfirmPassword(e.target.value)}
+                        className='border border-gray-300 p-[1rem] rounded-[0.5rem] text-[1.5rem]'
+                    />
+                </div>
+                }
 
             <div className='w-[40rem] mb-[2rem] flex justify-between'>
                 <div>

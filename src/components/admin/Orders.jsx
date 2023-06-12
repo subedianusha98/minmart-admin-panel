@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { db } from "../../firebase"
-import { collection, getDocs } from "firebase/firestore"
+import { collection, getDocs,orderBy,query } from "firebase/firestore"
 import { useEffect } from "react";
 import moment from "moment/moment";
 
@@ -8,10 +8,11 @@ const Orders = () => {
     const [orders, setOrders] = useState([]);
 
     const getOrders = async () => {
-        const querySnapshot = await getDocs(collection(db, 'orders'));
+        const querySnapshot = await getDocs (query(collection(db, 'orders'),orderBy('date','desc')));
         const ordersData = querySnapshot.docs.map((doc) => doc.data());
         setOrders(ordersData);
     };
+
 
     useEffect(() => {
         getOrders();
@@ -23,11 +24,10 @@ const Orders = () => {
             <table className="w-[100%] border-spacing-0">
                 <thead>
                     <tr className="bg-[#ededed]">
-                        <th className="p-[1.5rem] text-justify text-[1.45rem]">User ID</th>
+                        <th className="p-[1.5rem] text-justify text-[1.45rem]">Store ID</th>
                         <th className="p-[1.5rem] text-justify text-[1.45rem]">Status</th>
                         <th className="p-[1.5rem] text-justify text-[1.45rem]">Total</th>
                         <th className="p-[1.5rem] text-justify text-[1.45rem]">Date</th>
-                        <th className="p-[1.5rem] text-justify text-[1.45rem]">Actions</th>
                     </tr>
                 </thead>
 
@@ -42,10 +42,7 @@ const Orders = () => {
                                     </td>
                                     <td className='p-[1.5rem] text-[1.35rem]'>{order.total}</td>
                                     <td className='p-[1.5rem] text-[1.35rem]'>{moment(order.date.seconds * 1000).format('YYYY-MM-DD')}</td>
-                                    <td className='p-[1.5rem] text-[1.35rem]'>
-                                        <i className="fa-solid fa-pencil mr-[1rem] cursor-pointer"></i>
-                                        <i className="fa-solid fa-trash cursor-pointer"></i>
-                                    </td>
+                                    
 
                                 </tr>
                             )

@@ -1,267 +1,145 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import { getDocs, collection } from "firebase/firestore";
+import { db } from "../../firebase";
 
 const Users = () => {
-    return (
-        <div className='h-full w-full'>
-            <div className="flex flex-col">
-                <div className="my-2 overflow-x-auto sm:-max-6 lg:-mx-8">
-                    <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                        <div className="shadow overflow-hidden border-b border-gray-200 m-4 sm:rounded-lg">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
-                                    <tr className='hover:bg-gray-50'>
-                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Name
-                                        </th>
-                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Title
-                                        </th>
-                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Status
-                                        </th>
-                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Role
-                                        </th>
-                                        <th scope="col" className="relative px-6 py-3">
-                                            <span className="sr-only">Edit</span>
-                                        </th>
-                                    </tr>
-                                </thead>
+  const [users, setUsers] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [changePassword, setChangePassword] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedOption, setSelectedOption] = useState("");
 
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                    <tr className='hover:bg-gray-50'>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="flex items-center">
-                                                <div className="flex-shrink-0 h-10 w-10">
-                                                    <img className="w-full h-full rounded-full"
-                                                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=htmlFormat&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                        alt="" />                                                </div>
-                                                <div className="ml-4">
-                                                    <div className="text-sm font-medium text-gray-900">
-                                                        Sebastian Luna
-                                                    </div>
-                                                    <div className="text-sm text-gray-500">
-                                                        email@email.com
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">Co-founder</div>
-                                            <div className="text-sm text-gray-500">Developer</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            Admin
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="#" className="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                        </td>
-                                    </tr>
+  const getUsers = async () => {
+    const querySnapshot = await getDocs(collection(db, "users"));
+    const usersData = querySnapshot.docs
+      .map((doc) => doc.data())
+      .filter(
+        (user) =>
+          user.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    setUsers(usersData);
+  };
 
-                                    <tr className='hover:bg-gray-50'>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="flex items-center">
-                                                <div className="flex-shrink-0 h-10 w-10">
-                                                    <img className="w-full h-full rounded-full"
-                                                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=htmlFormat&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                        alt="" />                                                </div>
-                                                <div className="ml-4">
-                                                    <div className="text-sm font-medium text-gray-900">
-                                                        Vilfer Alvarez
-                                                    </div>
-                                                    <div className="text-sm text-gray-500">
-                                                        email@email.com
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">Co-founder</div>
-                                            <div className="text-sm text-gray-500">Developer</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            Admin
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="#" className="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  useEffect(() => {
+    getUsers();
+  }, [searchTerm]);
 
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
-            <div className="container mx-auto px-4 sm:px-8">
-                <div className="py-8">
-                    <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-                        <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                            <table className="min-w-full leading-normal">
-                                <thead>
-                                    <tr className='hover:bg-gray-500'>
-                                        <th
-                                            className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                            User
-                                        </th>
-                                        <th
-                                            className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                            Rol
-                                        </th>
-                                        <th
-                                            className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                            Created at
-                                        </th>
-                                        <th
-                                            className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                            Status
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr className='hover:bg-gray-50'>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <div className="flex items-center">
-                                                <div className="flex-shrink-0 w-10 h-10">
-                                                    <img className="w-full h-full rounded-full"
-                                                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=htmlFormat&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                        alt="" />
-                                                </div>
-                                                <div className="ml-3">
-                                                    <p className="text-gray-900 whitespace-no-wrap">
-                                                        Vera Carpenter
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p className="text-gray-900 whitespace-no-wrap">Admin</p>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p className="text-gray-900 whitespace-no-wrap">
-                                                Jan 21, 2020
-                                            </p>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <span
-                                                className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                                <span aria-hidden
-                                                    className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                                <span className="relative">Activo</span>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr className='hover:bg-gray-50'>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <div className="flex items-center">
-                                                <div className="flex-shrink-0 w-10 h-10">
-                                                    <img className="w-full h-full rounded-full"
-                                                        src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=htmlFormat&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                        alt="" />
-                                                </div>
-                                                <div className="ml-3">
-                                                    <p className="text-gray-900 whitespace-no-wrap">
-                                                        Blake Bowman
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p className="text-gray-900 whitespace-no-wrap">Editor</p>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p className="text-gray-900 whitespace-no-wrap">
-                                                Jan 01, 2020
-                                            </p>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <span
-                                                className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                                <span aria-hidden
-                                                    className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                                <span className="relative">Activo</span>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr className='hover:bg-gray-50'>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <div className="flex items-center">
-                                                <div className="flex-shrink-0 w-10 h-10">
-                                                    <img className="w-full h-full rounded-full"
-                                                        src="https://images.unsplash.com/photo-1540845511934-7721dd7adec3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=htmlFormat&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                        alt="" />
-                                                </div>
-                                                <div className="ml-3">
-                                                    <p className="text-gray-900 whitespace-no-wrap">
-                                                        Dana Moore
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p className="text-gray-900 whitespace-no-wrap">Editor</p>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p className="text-gray-900 whitespace-no-wrap">
-                                                Jan 10, 2020
-                                            </p>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <span
-                                                className="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
-                                                <span aria-hidden
-                                                    className="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
-                                                <span className="relative">Suspended</span>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr className='hover:bg-gray-50'>
-                                        <td className="px-5 py-5 bg-white text-sm">
-                                            <div className="flex items-center">
-                                                <div className="flex-shrink-0 w-10 h-10">
-                                                    <img className="w-full h-full rounded-full"
-                                                        src="https://images.unsplash.com/photo-1522609925277-66fea332c575?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=htmlFormat&fit=facearea&facepad=2.2&h=160&w=160&q=80"
-                                                        alt="" />
-                                                </div>
-                                                <div className="ml-3">
-                                                    <p className="text-gray-900 whitespace-no-wrap">
-                                                        Alonzo Cox
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-5 py-5 bg-white text-sm">
-                                            <p className="text-gray-900 whitespace-no-wrap">Admin</p>
-                                        </td>
-                                        <td className="px-5 py-5 bg-white text-sm">
-                                            <p className="text-gray-900 whitespace-no-wrap">Jan 18, 2020</p>
-                                        </td>
-                                        <td className="px-5 py-5 bg-white text-sm">
-                                            <span
-                                                className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                                                <span aria-hidden
-                                                    className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                                                <span className="relative">Inactive</span>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+    if (option) {
+      setShowModal(true);
+    } else {
+      setShowModal(false);
+    }
+  };
 
-                        </div>
-                    </div>
-                </div>
-            </div>
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setChangePassword("");
+    setSelectedOption("");
+  };
 
+  return (
+    <>
+      <div className="flex justify-end mb-4">
+        <div className="relative">
+          <input
+            className="border border-gray-800 rounded-md py-3 px-5 pr-16 w-64 text-[19px]"
+            type="text"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+          <button className="absolute top-1/2 right-4 transform -translate-y-1/2">
+            <i className="fas fa-search text-gray-500 text-xl"></i>
+          </button>
         </div>
-    )
-}
+      </div>
 
-export default Users
+      <div className="w-full flex flex-col border rounded-[0.5rem] overflow-hidden">
+        <table className="w-[100%] border-spacing-0">
+          <thead>
+            <tr className="bg-[#ededed]">
+              <th className="p-[1.5rem] text-justify text-[1.45rem]">Email</th>
+              <th className="p-[1.5rem] text-justify text-[1.45rem]">Phone Number</th>
+              <th className="p-[1.5rem] text-justify text-[1.45rem]">Role</th>
+              <th className="p-[1.5rem] text-justify text-[1.45rem]">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user, i) => (
+              <tr key={i} className="border-b last:border-0">
+                <td className="p-[1.5rem] text-[1.35rem]">{user.email}</td>
+                <td className="p-[1.5rem] text-[1.35rem]">{user.mobile_number}</td>
+                <td className="p-[1.5rem] text-[1.35rem]">{user.role}</td>
+                <td className="p-[1.5rem] text-[1.35rem]">
+                  <i
+                    className="fa-solid fa-pencil mr-[1rem] cursor-pointer"
+                    onClick={() => setShowModal(true)}
+                  ></i>
+                  {showModal && (
+                    <div className="justify-center items-center flex overflow-x-hidden absolute inset-0 py-0 px-0 bg-gray-100 opacity-50">
+                      <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                        <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                          <div className="relative p-6 flex-auto">
+                            <div className="w-[40rem] mb-[2rem] flex flex-col gap-[0.5rem]">
+                              {selectedOption ? (
+                                <span className="p-[1rem] text-[1.5rem] border border-gray-400 rounded-[0.5rem]">
+                                  {selectedOption}
+                                </span>
+                              ) : (
+                                <select
+                                  className="rounded-[0.5rem] p-[1rem] text-[1.5rem] border border-gray-400 appearance-none"
+                                  onChange={(e) => handleOptionSelect(e.target.value)}
+                                >
+                                  <option value="" disabled>Select an option</option>
+                                  <option className="bg-white">Admin</option>
+                                  <option className="bg-white">Staff</option>
+                                </select>
+                              )}
+                              <button className="absolute justify-center top-[4rem] right-[3rem] transform -translate-y-1/2">
+                                <i className="fas fa-caret-down text-gray-500 "> </i>
+                              </button>
+                            </div>
+
+                            <div className="w-[40rem] mb-[2rem] flex flex-col gap-[0.5rem]">
+                              <label className="text-[1.45rem] text-black-500">New Password</label>
+                              <input
+                                name="changePassword"
+                                type="text"
+                                autoComplete="off"
+                                value={changePassword}
+                                onChange={(e) => setChangePassword(e.target.value)}
+                                className="border border-gray-400 p-[1rem] rounded-[0.5rem] text-[1.5rem]"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-end p-6 rounded-b">
+                            <button
+                              className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-lg px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                              type="button"
+                              onClick={handleCloseModal}
+                            >
+                              Update
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+};
+
+export default Users;
