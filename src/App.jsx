@@ -11,9 +11,10 @@ import AdminLayout from './components/admin/AdminLayout';
 import Orders from './components/admin/Orders';
 import Products from './components/admin/Products';
 import Stores from './components/admin/Stores'
-import Users from './components/admin/Users';
+import Users from './components/admin/User/Users';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import UserForm from './components/admin/User/UserForm';
 
 
 const router = createBrowserRouter(
@@ -30,6 +31,10 @@ const router = createBrowserRouter(
                 <Route exact path='products' element={<Products />} />
                 <Route exact path='stores' element={<Stores />} />
                 <Route exact path='users' element={<Users />} />
+
+
+                
+
 
                 
 
