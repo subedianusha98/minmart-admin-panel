@@ -8,12 +8,14 @@ import { db } from "../../../firebase";
 const UserForm = ({ openDrawer, setOpenDrawer, onSaveUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword ,setConfirmPassword] =useState("");
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [role, setRole] = useState("Admin");
+ 
 
   const resetForm = () => {
-    setEmail(""), setPassword(""), setName(""), setNumber(""), setRole("");
+    setEmail(""), setPassword(""), setName(""), setNumber(""), setRole("") ,setConfirmPassword("");
   };
 
   const submitHandler = async (e) => {
@@ -21,7 +23,7 @@ const UserForm = ({ openDrawer, setOpenDrawer, onSaveUser }) => {
 
     const toastId = toast.loading("Processing...");
 
-    if (!email || !password || !name || !role || !number) {
+    if (!email || !password || !name || !role || !number || !confirmPassword) {
       return toast.error("Please fill in all the fields.", { id: toastId });
     }
 
@@ -78,7 +80,7 @@ const UserForm = ({ openDrawer, setOpenDrawer, onSaveUser }) => {
         <div
           onClick={(e) => {
             if (e.target.id === "overlay") {
-              onClick = { handleClose };
+              handleClose();
             }
           }}
           id="overlay"
@@ -99,7 +101,7 @@ const UserForm = ({ openDrawer, setOpenDrawer, onSaveUser }) => {
         </div>
 
         <form
-          className="h-[100vh] px-[2rem] flex flex-col justify-center items-center border"
+          className="h-[100vh] px-[2rem] flex flex-col  items-center border"
           onSubmit={submitHandler}
         >
           <h1 className="text-3xl font-bold ">Add User</h1>
@@ -135,6 +137,17 @@ const UserForm = ({ openDrawer, setOpenDrawer, onSaveUser }) => {
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="border border-gray-300 p-[1rem] rounded-[0.5rem] text-[1.5rem]"
+            />
+          </div>
+          <div className="w-[40rem] mb-[2rem] flex flex-col gap-[0.5rem]">
+            <label className="text-[1.45rem] text-black-500"> Confirm Password</label>
+            <input
+              name="confirmPassword"
+              type="password"
+              autoComplete="new-password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               className="border border-gray-300 p-[1rem] rounded-[0.5rem] text-[1.5rem]"
             />
           </div>

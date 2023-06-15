@@ -3,13 +3,17 @@ import { getDocs, collection } from "firebase/firestore";
 import { db } from "../../../firebase";
 import UserForm from "../User/UserForm";
 import { getAuth, updatePassword } from "firebase/auth";
+import PasswordForm from "./PasswordForm";
+
 
 const Users = () => {
   const [users, setUsers] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [changePassword, setChangePassword] = useState("");
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [openForm,setOpenForm]=useState(false);
+
+
 
   const getUsers = async () => {
     const querySnapshot = await getDocs(collection(db, "users"));
@@ -25,28 +29,10 @@ const Users = () => {
     getUsers();
   }, [searchTerm]);
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setChangePassword("");
-
-    if (changePassword.trim() !== "") {
-      const auth = getAuth();
-      const user = auth.currentUser;
-      if (user) {
-        updatePassword(user, changePassword)
-          .then(() => {
-            console.log("password updated successfully");
-          })
-          .catch((error) => {
-            console.log("error updating password", error);
-          });
-      }
-    }
-  };
-
   const handleSaveUser = (userData) => {
     setUsers([...users, userData]);
   };
+ 
 
   return (
     <>
@@ -103,43 +89,10 @@ const Users = () => {
                 <td className="p-[1.5rem] text-[1.35rem]">
                   <i
                     className="fa-solid fa-pencil mr-[1rem] cursor-pointer"
-                    onClick={() => setShowModal(true)}
+                    onClick={() => setOpenForm(true)}
+
                   ></i>
-                  {showModal && (
-                    <div className="absolute top-0 right-0 bottom-0 left-0 pt-[20rem] bg-gray-300 bg-opacity-50  transition-all ease-out duration-200">
-                      <div className=" w-auto my-6 mx-auto max-w-3xl">
-                        <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                          <div className="relative p-6 flex-auto">
-                            <div className="w-[40rem] mb-[2rem] flex flex-col gap-[0.5rem]">
-                              <label className="text-[1.45rem] text-black-500">
-                                New Password
-                              </label>
-                              <input
-                                name="changePassword"
-                                type="text"
-                                autoComplete="off"
-                                value={changePassword}
-                                onChange={(e) =>
-                                  setChangePassword(e.target.value)
-                                }
-                                className="border border-gray-400 p-[1rem] rounded-[0.5rem] text-[1.5rem]"
-                              />
-                            </div>
-                          </div>
-                          <div className="flex items-center justify-end p-6 rounded-b">
-                            <button
-                              className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-lg px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                              type="button"
-                              onClick={handleCloseModal}
-                              disabled={!changePassword.trim()}
-                            >
-                              Update
-                            </button>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                  
                 </td>
               </tr>
             ))}
@@ -150,6 +103,10 @@ const Users = () => {
           setOpenDrawer={setOpenDrawer}
           onSaveUser={handleSaveUser}
         />
+        <PasswordForm
+        openForm={openForm}
+        setOpenForm={setOpenForm}
+         />
       </div>
     </>
   );

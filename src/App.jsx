@@ -6,7 +6,6 @@ import './App.css'
 
 // import components
 import Home from './components/pages/Home';
-import AuthForm from './components/auth/AuthForm';
 import AdminLayout from './components/admin/AdminLayout';
 import Orders from './components/admin/Orders';
 import Products from './components/admin/Products';
@@ -14,7 +13,6 @@ import Stores from './components/admin/Stores'
 import Users from './components/admin/User/Users';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
-import UserForm from './components/admin/User/UserForm';
 
 
 const router = createBrowserRouter(
